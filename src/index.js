@@ -10,7 +10,7 @@ const btnMoreEl = document.querySelector('.load-more');
 const galleryEl = document.querySelector('.gallery');
 
 formEl.addEventListener('submit', onFormSubmit);
-btnMoreEl.addEventListener('submit', onMoreClick);
+btnMoreEl.addEventListener('click', onMoreClick);
 
 const lightbox = new SimpleLightbox('.photo-card a', {
   /* options */
@@ -21,17 +21,21 @@ const lightbox = new SimpleLightbox('.photo-card a', {
   captionDelay: 250,
 });
 
-async function onFormSubmit(event) {
-  event.preventDefault();
+let q = '';
+let page = 1;
+
+async function loadImages() {
   Notiflix.Loading.standard('Loading data, please wait...');
-  galleryEl.innerHTML = '';
 
   try {
-    const images = await fetchImages(event.target.elements.searchQuery.value);
+    const images = await fetchImages(q, page);
 
     console.log(images);
 
     createMarkupCard(images);
+
+    page += 1;
+
     Notiflix.Loading.remove();
   } catch (error) {
     console.log(error);
@@ -42,7 +46,16 @@ async function onFormSubmit(event) {
   }
 }
 
-function onMoreClick(event) {}
+function onFormSubmit(event) {
+  event.preventDefault();
+  galleryEl.innerHTML = '';
+  q = event.target.elements.searchQuery.value;
+  loadImages();
+}
+
+function onMoreClick(event) {
+  loadImages();
+}
 
 function createMarkupCard({ hits }) {
   const markupGallery = hits
@@ -80,6 +93,6 @@ function createMarkupCard({ hits }) {
     )
     .join(' ');
 
-  galleryEl.innerHTML = markupGallery;
+  galleryEl.insertAdjacentHTML('beforeend', markupGallery);
   lightbox.refresh();
 }
