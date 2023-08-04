@@ -43,6 +43,7 @@ let page = 1;
 async function loadImages() {
   try {
     const images = await fetchImages(q, page);
+    console.log(page);
 
     if (!images.hits.length) {
       Notiflix.Notify.failure(
@@ -57,7 +58,6 @@ async function loadImages() {
       observer.observe(btnMoreEl);
     }
 
-    console.log(page);
     createMarkupCard(images);
     page += 1;
 
@@ -72,11 +72,12 @@ async function loadImages() {
 
 async function onFormSubmit(event) {
   event.preventDefault();
+  observer.unobserve(btnMoreEl);
   Notiflix.Loading.standard('Loading data, please wait...');
   galleryEl.innerHTML = '';
   page = 1;
   q = event.target.elements.searchQuery.value;
-  await loadImages();
+  loadImages();
   Notiflix.Loading.remove();
 }
 
