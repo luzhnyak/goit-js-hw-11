@@ -49,6 +49,7 @@ async function loadImages() {
         'Sorry, there are no images matching your search query. Please try again.'
       );
       observer.unobserve(btnMoreEl);
+      return;
     }
 
     if (page === 1) {
