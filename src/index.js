@@ -72,6 +72,7 @@ async function onFormSubmit(event) {
   event.preventDefault();
   Notiflix.Loading.standard('Loading data, please wait...');
   galleryEl.innerHTML = '';
+  page = 1;
   q = event.target.elements.searchQuery.value;
   await loadImages();
   observer.observe(btnMoreEl);
