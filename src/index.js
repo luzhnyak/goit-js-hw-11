@@ -53,6 +53,7 @@ async function loadImages() {
 
     if (page === 1) {
       Notiflix.Notify.success(`Hooray! We found ${images.totalHits} images.`);
+      observer.observe(btnMoreEl);
     }
 
     console.log(page);
@@ -75,7 +76,6 @@ async function onFormSubmit(event) {
   page = 1;
   q = event.target.elements.searchQuery.value;
   await loadImages();
-  observer.observe(btnMoreEl);
   Notiflix.Loading.remove();
 }
 
